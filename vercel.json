@@ -3,21 +3,17 @@
   "builds": [
     {
       "src": "api/*.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "public/**",
-      "use": "@vercel/static"
+      "use": "@vercel/python",
+      "config": {
+        "maxLambdaSize": "15mb",
+        "includeFiles": ["lib/**"]
+      }
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
       "dest": "api/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "public/$1"
     }
   ]
 }
