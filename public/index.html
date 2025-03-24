@@ -1,39 +1,36 @@
 <!DOCTYPE html>
-<html>
+<html lang="ar" dir="rtl">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مكتبتي الشخصية</title>
     <link rel="stylesheet" href="/style.css">
-    <title>My Digital Library</title>
-    <script src="https://unpkg.com/htmx.org@1.9.6"></script>
-    <script>
-        async function deleteBook(title) {
-            await fetch(`/api/books/${encodeURIComponent(title)}`, {
-                method: 'DELETE'
-            });
-            htmx.trigger('#book-list', 'refresh');
-        }
-    </script>
 </head>
 <body>
-    <h1>My Personal Library</h1>
-    
-    <form hx-post="/api/books" hx-swap="none">
-        <input type="text" name="title" placeholder="Title" required>
-        <input type="text" name="author" placeholder="Author" required>
-        <input type="text" name="genre" placeholder="Genre" required>
-        <input type="number" name="year" placeholder="Year" required>
-        <button type="submit">Add Book</button>
-    </form>
-
-    <div id="book-list" hx-get="/api/books" hx-trigger="load, refresh">
-        <!-- Books will load here -->
+    <div class="container">
+        <header>
+            <h1>📚 مكتبتي الشخصية</h1>
+        </header>
+        
+        <section class="add-book">
+            <h2>إضافة كتاب جديد</h2>
+            <form id="bookForm">
+                <input type="text" id="title" placeholder="عنوان الكتاب" required>
+                <input type="text" id="author" placeholder="المؤلف" required>
+                <input type="text" id="genre" placeholder="النوع الأدبي" required>
+                <input type="number" id="year" placeholder="سنة النشر" required>
+                <button type="submit">إضافة الكتاب</button>
+            </form>
+        </section>
+        
+        <section class="book-list">
+            <h2>قائمة الكتب</h2>
+            <div id="booksContainer">
+                <!-- يتم عرض الكتب هنا ديناميكيًا -->
+            </div>
+        </section>
     </div>
 
-    <template id="book-template">
-        <div class="book">
-            <h3>{title}</h3>
-            <p>By {author} ({year}) - {genre}</p>
-            <button onclick="deleteBook('{title}')">Delete</button>
-        </div>
-    </template>
+    <script src="/app.js"></script>
 </body>
 </html>
