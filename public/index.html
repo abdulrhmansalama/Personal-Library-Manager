@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Digital Library</title>
+    <script src="https://unpkg.com/htmx.org@1.9.6"></script>
+    <script>
+        async function deleteBook(title) {
+            await fetch(`/api/books/${encodeURIComponent(title)}`, {
+                method: 'DELETE'
+            });
+            htmx.trigger('#book-list', 'refresh');
+        }
+    </script>
+</head>
+<body>
+    <h1>My Personal Library</h1>
+    
+    <form hx-post="/api/books" hx-swap="none">
+        <input type="text" name="title" placeholder="Title" required>
+        <input type="text" name="author" placeholder="Author" required>
+        <input type="text" name="genre" placeholder="Genre" required>
+        <input type="number" name="year" placeholder="Year" required>
+        <button type="submit">Add Book</button>
+    </form>
+
+    <div id="book-list" hx-get="/api/books" hx-trigger="load, refresh">
+        <!-- Books will load here -->
+    </div>
+
+    <template id="book-template">
+        <div class="book">
+            <h3>{title}</h3>
+            <p>By {author} ({year}) - {genre}</p>
+            <button onclick="deleteBook('{title}')">Delete</button>
+        </div>
+    </template>
+</body>
+</html>
